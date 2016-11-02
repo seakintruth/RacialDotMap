@@ -24,19 +24,9 @@ class PersonPoint {
 ArrayList people;
 
 float pointWeight(int level) {
+  /*return 0.05;*/
+  
   switch(level) {
-  case 4: 
-      return 0.01;
-  case 5: 
-      return 0.01;
-  case 6: 
-      return 0.01;
-  case 7: 
-      return 0.01;
-  case 8: 
-      return 0.01;
-  case 9: 
-      return 0.02;
   case 10: 
       return 0.02;
   case 11: 
@@ -44,6 +34,10 @@ float pointWeight(int level) {
   case 12: 
       return 0.02;
   case 13: 
+      return 0.02;
+  case 14: 
+      return 0.02;
+  case 15: 
       return 0.02;
   default: 
     return 0.0;
@@ -52,18 +46,6 @@ float pointWeight(int level) {
 
 float transparent(int level) {
   switch(level) {
-  case 4: 
-      return 153;
-  case 5: 
-      return 153;
-  case 6: 
-      return 179;
-  case 7: 
-      return 179;
-  case 8: 
-      return 204;
-  case 9: 
-      return 204;
   case 10: 
       return 230;
   case 11: 
@@ -71,6 +53,10 @@ float transparent(int level) {
   case 12: 
       return 255;
   case 13: 
+      return 255;
+  case 14: 
+      return 255;
+  case 15: 
       return 255;
   default: 
     return 0.0;
@@ -82,14 +68,14 @@ void setup(){
   size(512, 512, JAVA2D);
   smooth(8);
 
-  String[] zoomlevels = loadStrings(".../zoomlevel.txt");  // a text file with lines 4, 5, 6 ...etc. specifing zoomlevel
+  String[] zoomlevels = loadStrings("zoomlevel.txt");  // a text file with lines 4, 5, 6 ...etc. specifing zoomlevel
 
   for ( int i=0; i<zoomlevels.length; i++ ) {
 
     int level = int(zoomlevels[i]);
 
     println( "loading..." );
-    reader = createReader(".../peoplesort_by_race.csv");  // the datafile (converted to .csv) sorted by quadkey
+    reader = createReader("sorted.csv");  // the datafile (converted to .csv) sorted by quadkey
     try {
       String line;
 
@@ -117,19 +103,21 @@ void setup(){
         }
 
         String[] fields = split(line, ",");
-        float px = float(fields[1])/A;
-        float py = float(fields[2])/A;
-        String newQuadkey = fields[3].substring(0,level);
-        String race_type = fields[4].substring(0, 1);
+        float px = float(fields[0])/A;
+        float py = float(fields[1])/A;
+        String newQuadkey = fields[2].substring(0,level);
+        String race_type = fields[3].substring(0, 1);
 
         if ( !newQuadkey.equals( quadkey ) ) {
+          println(newQuadkey, race_type, level);
+
           
           //finish up the last tile
           if (pg!=null) {
             pg.endDraw();
             PVector gtile = proj.GoogleTile((int)tms_tile.x, (int)tms_tile.y, level);
-            println( ".../tiles4/"+level+"/"+int(gtile.x)+"/"+int(gtile.y)+".png" );
-            pg.save( ".../tiles4/"+level+"/"+int(gtile.x)+"/"+int(gtile.y)+".png" );
+            println( "tiles4/"+level+"/"+int(gtile.x)+"/"+int(gtile.y)+".png" );
+            pg.save( "tiles4/"+level+"/"+int(gtile.x)+"/"+int(gtile.y)+".png" );
             println( "done" );
           }
 
@@ -160,42 +148,52 @@ void setup(){
           pg.translate(-(float)tile_ll, -(float)tile_tt);
 
           pg.strokeWeight(pointWeight(level));
-          
-          pg.background(255);
-        
+                  
         }
         
-        if (race_type.equals("w")) {
+        if (race_type.equals("1")) {
           pg.stroke(#73B2FF, transparent(level));
           pg.point(px, py);
         }
           
-        if (race_type.equals("b")) {
-          pg.stroke(159,212,0, transparent(level));
+        if (race_type.equals("2")) {
+          pg.stroke(#FFFF00, transparent(level));
           pg.point(px, py);
         }
         
-        if (race_type.equals("a")) {
+        if (race_type.equals("3")) {
+          pg.stroke(#001dff, transparent(level));
+          pg.point(px, py);
+        }
+          
+        if (race_type.equals("4")) {
+          pg.stroke(159,212,0, transparent(level));
+          pg.point(px, py);
+        }
+          
+        if (race_type.equals("5")) {
           pg.stroke(255,0,0, transparent(level));
           pg.point(px, py);
         }
-          
-        if (race_type.equals("h")) {
+        
+        if (race_type.equals("6")) {
           pg.stroke(255,170,0, transparent(level));
           pg.point(px, py);
         }
-          
-        if (race_type.equals("o")) {
+        
+        if (race_type.equals("9")) {
           pg.stroke(#996633, transparent(level));
           pg.point(px, py);
         }
        
       }
+      
+      println(pg==null);
 
       if (pg!=null) {
         pg.endDraw();
         PVector gtile = proj.GoogleTile((int)tms_tile.x, (int)tms_tile.y, level);
-        pg.save( ".../tiles4/"+level+"/"+int(gtile.x)+"/"+int(gtile.y)+".png" );
+        pg.save( "tiles4/"+level+"/"+int(gtile.x)+"/"+int(gtile.y)+".png" );
         println( "done" );
       }
     } 
