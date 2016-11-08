@@ -14,6 +14,12 @@
         height: 100%;
       }
 
+      #slider {
+          position: absolute;
+          right: 2%;
+          top: 3%;
+      }
+
       #legend {
           border: 4px solid black;
           position: absolute;
@@ -81,6 +87,11 @@
             <tr><td id="sca"><span class="legend-circle"></span></td><td>South and Central Amercian</td></tr>
             <tr><td id="sea"><span class="legend-circle"></span></td><td>South and East Asia</td></tr>
         </table>
+    </div>
+
+    <div id="slider">
+        <input type="range" min="1990" max="2000" id="timeSlider">
+        <span id="currentYear"></span>
     </div>
     <script>
 
@@ -275,9 +286,12 @@ var mapStyle =
   }
 ]
 
+var imageMapType;
+var map;
+
 function initMap() {
 	var styledMapType = new google.maps.StyledMapType(mapStyle, {name: 'Styled Map'});
-        var map = new google.maps.Map(document.getElementById('map'), {
+        map = new google.maps.Map(document.getElementById('map'), {
           zoom: 10,
           center: {lat: 58.58, lng: 16.19}
         });
@@ -292,7 +306,7 @@ function initMap() {
           20: [[167757, 167763], [405263, 405269]]
         };
 
-        var imageMapType = new google.maps.ImageMapType({
+        imageMapType = new google.maps.ImageMapType({
           getTileUrl: function(coord, zoom) {
 console.log(coord, zoom)
             //if (zoom < 17 || zoom > 20 ||
@@ -301,13 +315,24 @@ console.log(coord, zoom)
             //  return null;
             //}
 
-            return `tiles4/${zoom}/${coord.x}/${coord.y}.png`;
+            return `tiles/${currentYear}/${zoom}/${coord.x}/${coord.y}.png`;
           },
           tileSize: new google.maps.Size(256, 256)
         });
 
         map.overlayMapTypes.push(imageMapType);
       }
+
+var currentYear = 1990;
+document.getElementById('currentYear').innerHTML = currentYear;
+
+document.getElementById('timeSlider').addEventListener('input', function () {
+    currentYear = this.value;
+    document.getElementById('currentYear').innerHTML = currentYear;
+    console.log('trigger', map);
+    map.overlayMapTypes.pop()
+    map.overlayMapTypes.push(imageMapType);
+});
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdmFPa8Hs-bvTQnSnbXef7KD2KQHXhgyM&callback=initMap">
