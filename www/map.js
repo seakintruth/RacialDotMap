@@ -22,7 +22,6 @@ function initMap() {
 
         imageMapType = new google.maps.ImageMapType({
           getTileUrl: function(coord, zoom) {
-console.log(coord, zoom)
             //if (zoom < 17 || zoom > 20 ||
             //    bounds[zoom][0][0] > coord.x || coord.x > bounds[zoom][0][1] ||
             //    bounds[zoom][1][0] > coord.y || coord.y > bounds[zoom][1][1]) {
@@ -43,7 +42,6 @@ document.getElementById('currentYear').innerHTML = currentYear;
 document.getElementById('timeSlider').addEventListener('input', function () {
     currentYear = this.value;
     document.getElementById('currentYear').innerHTML = currentYear;
-    console.log('trigger', map);
     map.overlayMapTypes.pop()
     map.overlayMapTypes.push(imageMapType);
 });
