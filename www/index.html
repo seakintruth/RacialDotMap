@@ -14,27 +14,29 @@
         height: 100%;
       }
 
+      .box-style {
+          border: 1px solid rgba(0,0,0,0.2);
+          border-radius: 2px;
+          background: rgba(255,255,255,.7);
+          padding: 5px;
+      }
+
       #slider {
           position: absolute;
           right: 2%;
           top: 3%;
-          border: 2px solid black;
-          border-radius: 5px;
-          background: rgba(255,255,255,.5);
-          padding: 5px;
       }
 
       #legend {
-          font-family: sans-serif;
-          border: 2px solid black;
-          border-radius: 5px;
           position: absolute;
           left: 2%;
           bottom: 3%;
-          width: 156px;
-          height: 155px;
-          font-size: 12px;
-          background: rgba(255,255,255,.5);
+          width: 142px;
+      }
+
+      .current-year-wrapper {
+          display: block;
+          text-align: center;
       }
 
       #legend td {
@@ -84,7 +86,7 @@
   </head>
   <body>
     <div id="map"></div>
-    <div id="legend">
+    <div id="legend" class="gm-style box-style">
         <table>
             <tr><td id="swe"><span class="legend-circle"></span></td><td>Swedish</td></tr>
             <tr><td id="we"><span class="legend-circle"></span></td><td>Western European</td></tr>
@@ -95,9 +97,9 @@
         </table>
     </div>
 
-    <div id="slider">
+    <div id="slider" class="gm-style box-style">
         <input type="range" min="1990" max="1992" value="1990" id="timeSlider">
-        <span id="currentYear"></span>
+        <div class="current-year-wrapper"><span id="currentYear"><span></div>
     </div>
     <script>
 
